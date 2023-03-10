@@ -163,3 +163,62 @@ def string_partition_strategy(key):
         return key[index_of + 1 :]
     except ValueError:
         return key
+
+
+class MigrationState:
+    start_time: int
+    planned_migrations: int
+    completed_migrations: int
+    remaining_migrations: int
+    elapsed_time: int
+
+    def __init__(
+        self,
+        start_time: int,
+        planned_migrations: int,
+        completed_migrations: int,
+        remaining_migrations: int,
+        elapsed_time: int,
+    ):
+        self.start_time = start_time
+        self.planned_migrations = planned_migrations
+        self.completed_migrations = completed_migrations
+        self.remaining_migrations = remaining_migrations
+        self.elapsed_time = elapsed_time
+
+class ReplicaMigrationEvent:
+    replica_index: int
+    source: MemberInfo
+    destination: MemberInfo
+    is_success: bool
+    elapsed_time: int
+    migration_state: MigrationState
+
+    def __init__(
+        self,
+        replica_index: int,
+        source: MemberInfo,
+        destination: MemberInfo,
+        is_success: bool,
+        elapsed_time: int,
+        migration_state: MigrationState,
+    ):
+        self.replica_index = replica_index
+        self.source = source
+        self.destination = destination
+        self.is_success = is_success
+        self.elapsed_time = elapsed_time
+        self.migration_state = migration_state
+
+class MigrationListener:
+    def migration_started(self, migration_event):
+
+
+    def migration_completed(self, migration_event):
+        pass
+
+    def replica_migration_completed(self, event: ReplicaMigrationEvent) -> None:
+        pass
+
+    def replica_migration_failed(self, event: ReplicaMigrationEvent) -> None:
+        pass
